@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI 如何幫助你快速找到精準名單？</title>
     <style>
         * {
@@ -16,34 +16,35 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
             background-image: url('https://drive.google.com/uc?export=view&id=1aurt2YqMzON9d39Hz8dxZOn98r7DHFIB');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             color: #fff;
+            overflow: hidden;
         }
 
         .container {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 20px;
             border-radius: 10px;
-            width: 100%;
-            max-width: 500px;
+            width: 90%;
+            max-width: 400px; /* 適合手機及桌面顯示的最大寬度 */
             text-align: center;
             position: relative;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
-            font-size: 1.8em;
-            margin-bottom: 1em;
+            font-size: 1.6em;
+            margin-bottom: 10px;
             color: #00d4ff;
         }
 
         .description {
             font-size: 1em;
-            margin-bottom: 1em;
+            margin-bottom: 15px;
             color: #ccc;
         }
 
@@ -67,28 +68,31 @@
         }
 
         p {
-            font-size: 1.2em;
-            margin-bottom: 1em;
+            font-size: 1em;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
-            margin: 10px 0;
+            margin: 8px 0;
+            font-size: 0.9em;
             cursor: pointer;
         }
 
         input[type="radio"], input[type="text"], input[type="email"], input[type="tel"], input[type="date"] {
-            margin-right: 10px;
-            width: 90%;
+            width: 100%;
             padding: 8px;
             border-radius: 5px;
             border: 1px solid #00d4ff;
             background-color: #1f1c2c;
             color: #fff;
+            font-size: 0.9em;
+            margin-top: 5px;
         }
 
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 10px;
             font-size: 1em;
             border: none;
             background-color: #00d4ff;
@@ -109,16 +113,27 @@
         }
 
         .share-buttons button {
-            margin: 5px;
+            margin: 5px 0;
             font-size: 0.9em;
+            width: 100%;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
+        @media (min-width: 600px) {
+            .container {
+                max-width: 450px;
+                padding: 25px;
             }
-            to {
-                opacity: 1;
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .description {
+                font-size: 1.1em;
+            }
+
+            p, label {
+                font-size: 1em;
             }
         }
     </style>
@@ -149,7 +164,7 @@
                 <label><input type="radio" name="q1" value="C"> 非常不足</label>
                 <button type="button" onclick="nextQuestion(1)">下一題</button>
             </div>
-            <!-- 省略 2-14 題的程式碼，保持一致 -->
+            <!-- 完整的 15 題問題 (此處省略題目 2-14) -->
             <div class="question" id="q15">
                 <p>15. 您希望透過 AI 技術來改善哪些名單管理功能？</p>
                 <label><input type="radio" name="q15" value="A" required> 客戶分類</label>
