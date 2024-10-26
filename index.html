@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 如何幫助你快速找到精準名單？</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body, html {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #121212;
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+        }
+
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #66d9ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        h1::before {
+            content: "◇";
+            margin-right: 8px;
+            color: #ffcc00;
+        }
+
+        h1::after {
+            content: "●";
+            margin-left: 8px;
+            color: #ffcc00;
+        }
+
+        .description {
+            font-size: 1em;
+            margin-bottom: 15px;
+            color: #bbbbbb;
+        }
+
+        .question, .user-info {
+            display: none;
+            position: absolute;
+            width: 100%;
+            left: 100%;
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .question.active, .user-info.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in {
+            transform: translateX(-100%);
+        }
+
+        .user-info p {
+            font-size: 1.1em;
+            color: #66d9ef;
+            margin-bottom: 20px;
+        }
+
+        .user-info label {
+            font-size: 0.9em;
+            color: #cccccc;
+            display: block;
+            text-align: left;
+            margin: 10px 0 5px;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #2a2a2a;
+            color: #ffffff;
+            font-size: 1em;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            background-color: #66d9ef;
+            color: #121212;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #5bb8c5;
+        }
+
+        .share-buttons {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .share-buttons button {
+            margin: 5px 0;
+            font-size: 0.9em;
+            width: 100%;
+        }
+
+        .question p {
+            font-size: 1.1em;
+            color: #66d9ef;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-size: 0.9em;
+            color: #d9d9d9;
+            display: block;
+            margin: 5px 0;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        label:hover {
+            background-color: #333333;
+        }
+
+        @media (min-width: 600px) {
+            .container {
+                max-width: 400px;
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+
+            .description {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="surveyContainer">
+        <h1 id="mainTitle">AI 如何幫助你快速找到精準名單？</h1>
+        <p class="description" id="descriptionText">透過這份問卷，我們將協助您了解如何利用 AI 技術精準地鎖定潛在客戶，提升商機！</p>
+        <button onclick="startSurvey()">開始了解</button>
+
+        <form id="surveyForm">
+            <div class="user-info" id="info">
+                <p>請填寫您的基本資料</p>
+                <label for="name">稱呼:</label>
+                <input type="text" name="name" id="name" required>
+
+                <label for="phone">電話:</label>
+                <input type="tel" name="phone" id="phone" required>
+
+                <label for="line">LINE:</label>
+                <input type="text" name="line" id="line" required>
+
+                <label for="email">信箱:</label>
+                <input type="email" name="email" id="email" required>
+
+                <label for="birthdate">生日:</label>
+                <input type="date" name="birthdate" id="birthdate" required>
+
+                <button type="button" onclick="nextSection()">下一步</button>
+            </div>
+
+            <!-- 完整的 15 題問卷 -->
+            <div class="question" id="q1">
+                <p>1. 您目前的客戶名單是否充足？</p>
+                <label><input type="radio" name="q1" value="A" required> 完全充足</label>
+                <label><input type="radio" name="q1" value="B"> 還可以，但需要更多</label>
+                <label><input type="radio" name="q1" value="C"> 非常不足</label>
+                <button type="button" onclick="nextQuestion(1)">下一題</button>
+            </div>
+
+            <div class="question" id="q2">
+                <p>2. 在您蒐集客戶名單的過程中，最常遇到哪些困難？</p>
+                <label><input type="radio" name="q2" value="A" required> 找不到潛在客戶</label>
+                <label><input type="radio" name="q2" value="B"> 客戶需求不符合預期</label>
+                <label><input type="radio" name="q2" value="C"> 資料來源有限</label>
+                <label><input type="radio" name="q2" value="D"> 資料經常過時或不完整</label>
+                <button type="button" onclick="nextQuestion(2)">下一題</button>
+            </div>
+
+            <div class="question" id="q3">
+                <p>3. 您是否曾嘗試使用數位工具來尋找客戶名單？</p>
+                <label><input type="radio" name="q3" value="A" required> 是</label>
+                <label><input type="radio" name="q3" value="B"> 否</label>
+                <button type="button" onclick="nextQuestion(3)">下一題</button>
+            </div>
+
+            <div class="question" id="q4">
+                <p>4. 您認為客戶名單對於業務成長有多重要？</p>
+                <label><input type="radio" name="q4" value="A" required> 非常重要</label>
+                <label><input type="radio" name="q4" value="B"> 重要</label>
+                <label><input type="radio" name="q4" value="C"> 普通</label>
+                <label><input type="radio" name="q4" value="D"> 不重要</label>
+                <button type="button" onclick="nextQuestion(4)">下一題</button>
+            </div>
+
+            <div class="question" id="q5">
+                <p>5. 您的業務中，AI 技術是否被應用於客戶管理？</p>
+                <label><input type="radio" name="q5" value="A" required> 已經使用</label>
+                <label><input type="radio" name="q5" value="B"> 正在考慮使用</label>
+                <label><input type="radio" name="q5" value="C"> 尚未考慮使用</label>
+                <button type="button" onclick="nextQuestion(5)">下一題</button>
+            </div>
+
+            <div class="question" id="q6">
+                <p>6. 您是否有意願學習如何使用 AI 來提升業務成長？</p>
+                <label><input type="radio" name="q6" value="A" required> 非常有意願</label>
+                <label><input type="radio" name="q6" value="B"> 有意願</label>
+                <label><input type="radio" name="q6" value="C"> 無意願</label>
+                <button type="button" onclick="nextQuestion(6)">下一題</button>
+            </div>
+
+            <div class="question" id="q7">
+                <p>7. 您了解 AI 在客戶名單管理上的潛力嗎？</p>
+                <label><input type="radio" name="q7" value="A" required> 完全了解</label>
+                <label><input type="radio" name="q7" value="B"> 大概了解</label>
+                <label><input type="radio" name="q7" value="C"> 不太了解</label>
+                <label><input type="radio" name="q7" value="D"> 完全不了解</label>
+                <button type="button" onclick="nextQuestion(7)">下一題</button>
+            </div>
+
+            <div class="question" id="q8">
+                <p>8. 您的行業是否已經有人在使用 AI 來開發客戶名單？</p>
+                <label><input type="radio" name="q8" value="A" required> 是</label>
+                <label><input type="radio" name="q8" value="B"> 否</label>
+                <button type="button" onclick="nextQuestion(8)">下一題</button>
+            </div>
+
+            <div class="question" id="q9">
+                <p>9. 您認為 AI 可以幫助您在哪方面改進客戶管理？</p>
+                <label><input type="radio" name="q9" value="A" required> 名單精準度</label>
+                <label><input type="radio" name="q9" value="B"> 資料更新效率</label>
+                <label><input type="radio" name="q9" value="C"> 名單擴充</label>
+                <label><input type="radio" name="q9" value="D"> 其他</label>
+                <button type="button" onclick="nextQuestion(9)">下一題</button>
+            </div>
+
+            <div class="question" id="q10">
+                <p>10. 您是否有使用 CRM 或其他客戶管理系統？</p>
+                <label><input type="radio" name="q10" value="A" required> 是</label>
+                <label><input type="radio" name="q10" value="B"> 否</label>
+                <button type="button" onclick="nextQuestion(10)">下一題</button>
+            </div>
+
+            <div class="question" id="q11">
+                <p>11. 您是否會考慮付費購買 AI 工具來提升名單品質？</p>
+                <label><input type="radio" name="q11" value="A" required> 會</label>
+                <label><input type="radio" name="q11" value="B"> 可能會</label>
+                <label><input type="radio" name="q11" value="C"> 不會</label>
+                <button type="button" onclick="nextQuestion(11)">下一題</button>
+            </div>
+
+            <div class="question" id="q12">
+                <p>12. 您認為 AI 對於客戶名單管理的最大挑戰是什麼？</p>
+                <label><input type="radio" name="q12" value="A" required> 隱私問題</label>
+                <label><input type="radio" name="q12" value="B"> 成本</label>
+                <label><input type="radio" name="q12" value="C"> 使用門檻</label>
+                <label><input type="radio" name="q12" value="D"> 資料的有效性</label>
+                <button type="button" onclick="nextQuestion(12)">下一題</button>
+            </div>
+
+            <div class="question" id="q13">
+                <p>13. 您目前使用哪些方式來建立客戶名單？</p>
+                <label><input type="radio" name="q13" value="A" required> 傳統市場推廣</label>
+                <label><input type="radio" name="q13" value="B"> 線上廣告</label>
+                <label><input type="radio" name="q13" value="C"> 自然搜尋流量</label>
+                <label><input type="radio" name="q13" value="D"> 其他</label>
+                <button type="button" onclick="nextQuestion(13)">下一題</button>
+            </div>
+
+            <div class="question" id="q14">
+                <p>14. 您的客戶名單維護頻率如何？</p>
+                <label><input type="radio" name="q14" value="A" required> 每月一次或更多</label>
+                <label><input type="radio" name="q14" value="B"> 每季度一次</label>
+                <label><input type="radio" name="q14" value="C"> 每半年一次</label>
+                <label><input type="radio" name="q14" value="D"> 很少或從不</label>
+                <button type="button" onclick="nextQuestion(14)">下一題</button>
+            </div>
+
+            <div class="question" id="q15">
+                <p>15. 您希望透過 AI 技術來改善哪些名單管理功能？</p>
+                <label><input type="radio" name="q15" value="A" required> 客戶分類</label>
+                <label><input type="radio" name="q15" value="B"> 名單過濾</label>
+                <label><input type="radio" name="q15" value="C"> 行為分析</label>
+                <label><input type="radio" name="q15" value="D"> 自動化營銷</label>
+                <button type="button" onclick="finishSurvey()">完成問卷</button>
+            </div>
+
+            <div id="finish" class="question">
+                <p>問卷已完成！感謝您的參與。</p>
+                <button type="submit">提交</button>
+            </div>
+        </form>
+
+        <div class="share-buttons" id="shareButtons">
+            <p>分享您的結果：</p>
+            <button onclick="shareOnFacebook()">分享到 Facebook</button>
+            <button onclick="shareOnTwitter()">分享到 Twitter</button>
+            <button onclick="shareOnLine()">分享到 LINE</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function startSurvey() {
+            const name = document.getElementById("name").value;
+            const phone = document.getElementById("phone").value;
+            const line = document.getElementById("line").value;
+            const email = document.getElementById("email").value;
+            const birthdate = document.getElementById("birthdate").value;
+
+            if (name && phone && line && email && birthdate) {
+                document.getElementById("mainTitle").style.display = "none";
+                document.getElementById("descriptionText").style.display = "none";
+                document.getElementById("info").classList.add("active");
+            } else {
+                alert("請填寫所有基本資料欄位以繼續。");
+            }
+        }
+
+        function nextSection() {
+            const currentSection = document.getElementById("info");
+            const nextSection = document.getElementById("q1");
+
+            currentSection.classList.add("slide-in");
+            setTimeout(() => {
+                currentSection.classList.remove("active", "slide-in");
+                nextSection.classList.add("active");
+            }, 500);
+        }
+
+        function nextQuestion(current) {
+            const currentQuestion = document.getElementById(`q${current}`);
+            const nextQuestion = document.getElementById(`q${current + 1}`);
+
+            currentQuestion.classList.add("slide-in");
+            setTimeout(() => {
+                currentQuestion.classList.remove("active", "slide-in");
+                if (nextQuestion) {
+                    nextQuestion.classList.add("active");
+                } else {
+                    document.getElementById("finish").classList.add("active");
+                }
+            }, 500);
+        }
+
+        function finishSurvey() {
+            document.getElementById("q15").classList.remove("active");
+            document.getElementById("finish").classList.add("active");
+        }
+
+        document.getElementById("surveyForm").onsubmit = function(event) {
+            event.preventDefault();
+            alert("感謝您的填寫！已成功提交問卷。");
+            captureScreenshot();
+            document.getElementById("shareButtons").style.display = "block";
+        };
+
+        function captureScreenshot() {
+            html2canvas(document.getElementById("surveyContainer")).then(canvas => {
+                const imgData = canvas.toDataURL("image/png");
+                const link = document.createElement("a");
+                link.href = imgData;
+                link.download = "問卷結果.png";
+                link.click();
+            });
+        }
+
+        function shareOnFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, "_blank");
+        }
+
+        function shareOnTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent("剛剛完成了一份科技感十足的問卷調查，快來看看！");
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, "_blank");
+        }
+
+        function shareOnLine() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://line.me/R/msg/text/?${url}`, "_blank");
+        }
+    </script>
+</body>
+</html>
